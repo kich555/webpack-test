@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
-    mode: 'development',
+    mode: process.env.mode || 'development', // development as default mode
     entry: {
         bundle: path.resolve(__dirname, 'src/index.js'),
     },
@@ -13,7 +13,10 @@ module.exports = {
         clean: true, // clean the dist folder before each build
         assetModuleFilename: '[name][ext]', // keep the original file name and extension
     },
-    devtool:'source-map', // enable source maps for debugging webpack's output. https://webpack.js.org/configuration/devtool/  module: {
+    resolve: {
+        extensions: ['.js', '.jsx',],
+    },
+    devtool:'source-map', // enable source maps for debugging webpack's output. https://webpack.js.org/configuration/devtool/ 
     devServer: {
         static: {
             directory: path.resolve(__dirname, 'dist'),
@@ -47,7 +50,27 @@ module.exports = {
             {
                 test: /\.(png|jpe?g|gif|svg)$/i, // check for image files
                 type: 'asset/resource', // use asset/resource to copy image files to dist folder
-            }
+                use: [
+                    {
+                        loader: 'url-loader',
+                        option: {
+                            limit: 10 * 1024, // 10kb
+                        }
+                    },
+                    {
+                        loader: 'img-loader',
+                    },
+                        
+                ]
+            },
+            {
+                test: /\.(eot|otf|ttf|woff|woff2)$/,
+                use: 'file-loader',
+            },
+            {
+                test: /\.webp$/,
+                use: [{ loader: 'file-loader' }, { loader: 'webp-loader' }],
+            },
         ],
     },
     plugins: [
