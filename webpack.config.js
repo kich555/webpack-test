@@ -53,7 +53,7 @@ module.exports = {
                 use: [
                     {
                         loader: 'url-loader',
-                        option: {
+                        options: {
                             limit: 10 * 1024, // 10kb
                         }
                     },
