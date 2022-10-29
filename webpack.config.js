@@ -8,8 +8,10 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name][contenthash].js'
+        filename: '[name][contenthash].js',
+        clean: true, // clean the dist folder before each build
     },
+    devtool:'source-map', // enable source maps for debugging webpack's output. https://webpack.js.org/configuration/devtool/  module: {
     devServer: {
         static: {
             directory: path.resolve(__dirname, 'dist'),
@@ -25,10 +27,20 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader',
+                    'style-loader', // 3. Inject styles into DOM
+                    'css-loader', //  2. Turns css into commonjs
+                    'sass-loader', // 1. Turns sass into css
                 ],
+            },
+            {
+                test: /\.js$/, // check for all js files
+                exclude: /node_modules/, // exclude node_modules folder
+                use: {
+                    loader: 'babel-loader', // use babel-loader for js files
+                    options: {
+                        presets: ['@babel/preset-env'], // use @babel/preset-env for env setup
+                    }
+                }
             },
         ],
     },
