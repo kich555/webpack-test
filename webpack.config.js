@@ -10,6 +10,7 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name][contenthash].js',
         clean: true, // clean the dist folder before each build
+        assetModuleFilename: '[name][ext]', // keep the original file name and extension
     },
     devtool:'source-map', // enable source maps for debugging webpack's output. https://webpack.js.org/configuration/devtool/  module: {
     devServer: {
@@ -42,6 +43,10 @@ module.exports = {
                     }
                 }
             },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/i, // check for image files
+                type: 'asset/resource', // use asset/resource to copy image files to dist folder
+            }
         ],
     },
     plugins: [
