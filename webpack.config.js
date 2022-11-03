@@ -49,7 +49,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif|svg)$/i, // check for image files
-                type: 'asset/resource', // use asset/resource to copy image files to dist folder
+                type: 'javascript/auto', // use javascript/auto to import image files as modules
                 use: [
                     {
                         loader: 'url-loader',
@@ -59,16 +59,16 @@ module.exports = {
                     },
                     {
                         loader: 'img-loader',
-                    },
-                        
-                ]
+                    },        
+                ],
             },
             {
                 test: /\.(eot|otf|ttf|woff|woff2)$/,
-                use: 'file-loader',
+                type: 'asset/resource', // use asset/resource to import font files as modules
             },
             {
                 test: /\.webp$/,
+                type: 'javascript/auto', // use javascript/auto to import image files as modules
                 use: [{ loader: 'file-loader' }, { loader: 'webp-loader' }],
             },
         ],
